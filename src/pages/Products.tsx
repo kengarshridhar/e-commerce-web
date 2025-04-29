@@ -1,3 +1,4 @@
+import ProductsList from "../components/products/productsList"
 
 const Products = () => {
   return (
@@ -6,7 +7,7 @@ const Products = () => {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">About Our Company</h1>
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Our Products</h1>
                 <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                   Learn about our mission, vision, and the team behind our e-commerce platform.
                 </p>
@@ -16,32 +17,12 @@ const Products = () => {
         </section>
   
         <section className="py-8">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-8 md:grid-cols-2">
-              <div>
-                <h2 className="text-2xl font-bold mb-4">Our Story</h2>
-                <p className="text-muted-foreground mb-4">
-                  Founded in 2020, our e-commerce platform started with a simple mission: to provide high-quality products
-                  at affordable prices with exceptional customer service.
-                </p>
-                <p className="text-muted-foreground">
-                  What began as a small online store has grown into a comprehensive marketplace offering thousands of
-                  products across multiple categories. Our commitment to quality and customer satisfaction remains at the
-                  core of everything we do.
-                </p>
-              </div>
-              <div className="rounded-lg overflow-hidden">
-                <img
-                  src="/placeholder.svg?height=400&width=600&text=Our+Story"
-                  alt="Our company story"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
+          <div className="container sm:px-4 md:px-6">
+            <ProductsList />
           </div>
         </section>
   
-        <section className="py-8 bg-muted">
+        {/* <section className="py-8 bg-muted">
           <div className="container px-4 md:px-6">
             <h2 className="text-2xl font-bold mb-8 text-center">Our Values</h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -60,7 +41,7 @@ const Products = () => {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
       </div>
   )
 }
