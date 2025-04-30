@@ -8,15 +8,15 @@ const ProductsList = () => {
 
   return (
     <>
-      {products.length == 0 ? (
-        <p className='text-center py-8'> No products found. Try a different search or add a new product. </p>
-      )
-      : (products.map((value, index) => (
-        <div className="grid gap-6 content-center sm:grid-cols-2 lg:grid-cols-3">
-              <ProductCard key={index} product={value} />
-            </div>
-          ))
-      )}
+      <div className="grid gap-6 content-center sm:grid-cols-2 lg:grid-cols-3">
+        {products.length == 0 ? (
+          <p className='text-center py-8'> No products found. Try a different search or add a new product. </p>
+        )
+        : (products.map((value, index) => (
+                <ProductCard key={index} product={value} />
+              ))
+            )}
+      </div>
     </>
   )
 }
