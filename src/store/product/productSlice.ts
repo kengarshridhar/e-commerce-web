@@ -1,4 +1,5 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, type PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
+import { getProducts } from "../../lib/API/utils"
 
 export interface Product {
   id: string
@@ -13,73 +14,66 @@ export interface Product {
 interface ProductsState {
   products: Product[]
   loading: boolean
-  error: string | null
+  error: boolean
 }
 
 const initialState: ProductsState = {
-  products: [
-    {
-        id: "1",
-        name: "Smartphone X",
-        description: "Latest smartphone with advanced features",
-        price: 999.99,
-        category: "Electronics",
-        image: "https://images.unsplash.com/photo-1617997455403-41f333d44d5b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        stock: 50,
-    },
-    {
-        id: "2",
-        name: "Laptop Pro",
-        description: "High-performance laptop for professionals",
-        price: 1499.99,
-        category: "Electronics",
-        image: "https://images.unsplash.com/photo-1491472253230-a044054ca35f?q=80&w=2084&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        stock: 30,
-    },
-    {
-        id: "3",
-        name: "Wireless Headphones",
-        description: "Premium noise-cancelling headphones",
-        price: 299.99,
-        category: "Audio",
-        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        stock: 100,
-    },
-  ],
+  products: [],
   loading: false,
-  error: null,
+  error: false,
 }
+
+// Fetch Products
+export const FetchProduct = createAsyncThunk("FetchProduct", async () => {
+  const products = await getProducts();
+  return products;
+});
 
 const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
     // Create
-    addProduct: (state, action: PayloadAction<Omit<Product, "id">>) => {
-      const newProduct = {
-        ...action.payload,
-        id: Date.now().toString(),
-      }
-      state.products.push(newProduct)
-    },
+    // addProduct: (state, action: PayloadAction<Omit<Product, "id">>) => {
+    //   const newProduct = {
+    //     ...action.payload,
+    //     id: Date.now().toString(),
+    //   }
+    //   state.products.push(newProduct)
+    // },
 
-    // Read - handled by the state itself
+    // // Read - handled by the state itself
 
-    // Update
-    updateProduct: (state, action: PayloadAction<Product>) => {
-      const index = state.products.findIndex((product) => product.id === action.payload.id)
-      if (index !== -1) {
-        state.products[index] = action.payload
-      }
-    },
+    // // Update
+    // updateProduct: (state, action: PayloadAction<Product>) => {
+    //   const index = state.products.findIndex((product) => product.id === action.payload.id)
+    //   if (index !== -1) {
+    //     state.products[index] = action.payload
+    //   }
+    // },
 
-    // Delete
-    deleteProduct: (state, action: PayloadAction<string>) => {
-      state.products = state.products.filter((product) => product.id !== action.payload)
-    },
+    // // Delete
+    // deleteProduct: (state, action: PayloadAction<string>) => {
+    //   state.products = state.products.filter((product) => product.id !== action.payload)
+    // },
   },
+  extraReducers: (builder) => {
+    builder.addCase(FetchProduct.pending, (state, action) => {
+      state.loading = true;
+    })
+
+    builder.addCase(FetchProduct.fulfilled, (state, action) => {
+      state.loading = false;
+      state.products = action.payload;
+    })
+
+    builder.addCase(FetchProduct.rejected, (state, action) => {
+      console.error("Error: ", action.payload)
+      state.error = true;
+    })
+  }
 })
 
-export const { addProduct, updateProduct, deleteProduct } = productsSlice.actions
+// export const { addProduct, updateProduct, deleteProduct } = productsSlice.actions
 
 export default productsSlice.reducer
